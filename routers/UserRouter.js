@@ -5,6 +5,7 @@ const UserController = require("../controllers/UserController");
 const UserRouter = Router();
 
 UserRouter.get("/", UserController.getAll);
+UserRouter.get("/:id", [authJwt.verifyTokenUser], UserController.getUserById);
 UserRouter.post("/create", UserController.create);
 UserRouter.put("/update/:id", [authJwt.verifyTokenUser], UserController.update);
 UserRouter.delete("/delete/:id", [authJwt.verifyTokenUser], UserController.delete);

@@ -17,6 +17,23 @@ module.exports = {
       return response.status(400).json(error.message);
     }
   },
+  async getUserById(request, response) {
+    try {
+      const { id } = request.params;
+
+      const user = await User.findOne({
+        where: { id },
+        attributes: {
+          exclude: ["password"],
+        },
+      });
+      if (!user) throw new Error("user does not exist");
+
+      return response.status(200).json(user);
+    } catch (error) {
+      return response.status(400).json(error.message);
+    }
+  },
   async create(request, response) {
     try {
       const { username, email, password } = request.body;
