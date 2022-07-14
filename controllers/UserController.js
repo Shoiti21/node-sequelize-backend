@@ -77,7 +77,12 @@ module.exports = {
       const user = await User.findByPk(id);
       if (!user) throw new Error("user does not exist");
 
+      // Forma 1 - fazer update após um findOne e deleta o registro
       await user.destroy();
+
+      // Forma 2 - fazer deletar com o where dentro do metodo delete
+      // const user2 = await User.destroy({where: {id}});
+
       return response.status(200).json(user);
     } catch (error) {
       return response.status(400).json(error.message);
