@@ -10,7 +10,7 @@ module.exports = {
       const user = await User.findAll({
         attributes: {
           exclude: ["password"],
-        }
+        },
       });
       return response.status(200).json(user);
     } catch (error) {
@@ -25,7 +25,7 @@ module.exports = {
         where: { id },
         attributes: {
           exclude: ["password"],
-        }
+        },
       });
       if (!user) throw new Error("user does not exist");
 
@@ -37,8 +37,12 @@ module.exports = {
   async create(request, response) {
     try {
       const { username, email, password } = request.body;
-      
-      const user = await User.create({ username, email, password: bcrypt.hashSync(password, 8) });
+
+      const user = await User.create({
+        username,
+        email,
+        password: bcrypt.hashSync(password, 8),
+      });
       return response.status(201).json(user);
     } catch (error) {
       return response.status(400).json(error.message);
@@ -85,17 +89,14 @@ module.exports = {
       });
       if (!user) throw new Error("invalid username or password");
 
-      var passwordIsValid = bcrypt.compareSync(
-        password,
-        user.password
-      );
+      var passwordIsValid = bcrypt.compareSync(password, user.password);
       if (!passwordIsValid) throw new Error("invalid password");
 
       var accessToken = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400
+        expiresIn: 86400,
       });
 
-      return response.status(200).json({...user, accessToken});
+      return response.status(200).json({ ...user, accessToken });
     } catch (error) {
       return response.status(400).json(error.message);
     }
