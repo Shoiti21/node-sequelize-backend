@@ -60,10 +60,10 @@ module.exports = {
       await user.update({ username, email, password: bcrypt.hashSync(password, 8) });
 
       // Forma 2 - fazer update com o where dentro do metodo update
-      const use2 = await User.update(
-        { username, email, password: bcrypt.hashSync(password, 8) },
-        { where: { id } }
-      );
+      // const use2 = await User.update(
+      //   { username, email, password: bcrypt.hashSync(password, 8) },
+      //   { where: { id } }
+      // );
 
       return response.status(200).json(use);
     } catch (error) {
