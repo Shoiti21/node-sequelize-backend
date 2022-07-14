@@ -56,8 +56,16 @@ module.exports = {
       const user = await User.findByPk(id);
       if (!user) throw new Error("user does not exist");
 
-      await user.update({ username, email, password });
-      return response.status(200).json(user);
+      // Forma 1 - fazer update após um findOne e atualizar o registro
+      await user.update({ username, email, password: bcrypt.hashSync(password, 8) });
+
+      // Forma 2 - fazer update com o where dentro do metodo update
+      const use2 = await User.update(
+        { username, email, password: bcrypt.hashSync(password, 8) },
+        { where: { id } }
+      );
+
+      return response.status(200).json(use);
     } catch (error) {
       return response.status(400).json(error.message);
     }
