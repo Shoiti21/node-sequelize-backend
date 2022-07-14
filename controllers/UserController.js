@@ -10,7 +10,7 @@ module.exports = {
       const user = await User.findAll({
         attributes: {
           exclude: ["password"],
-        },
+        }
       });
       return response.status(200).json(user);
     } catch (error) {
@@ -25,7 +25,7 @@ module.exports = {
         where: { id },
         attributes: {
           exclude: ["password"],
-        },
+        }
       });
       if (!user) throw new Error("user does not exist");
 
